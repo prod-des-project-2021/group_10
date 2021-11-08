@@ -4,22 +4,30 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Hello World'
+                echo 'Build'
             }
         }
         stage('Component Test') {
             steps {
-                echo 'Hello World'
+                echo 'CTest'
             }
         }
         stage('Integration test') {
             steps {
-                echo 'Hello World'
+                echo 'ITest'
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Hello World'
+                echo 'Merging to master...'
+		withCredentials([
+                    usernamePassword(credentials: '7b3625e0-0d7d-4a67-84d8-08a2d79f2b31', usernameVariable: USER, passwordVariable: PWD)
+                ]) {
+			sh 'git add -A'
+			sh 'git commit -m "Merged dev branch to main"'
+			sh 'git merge https://github.com/prod-des-project-2021/group_10.git dev'
+			sh 'git push https://github.com/prod-des-project-2021/group_10.git main'
+		}
             }
         }
     }
