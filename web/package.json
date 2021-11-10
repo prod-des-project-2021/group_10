@@ -1,21 +1,16 @@
 {
-  "name": "chrome-app",
+  "name": "chrome",
   "version": "1.0.0",
   "description": "",
-  "main": "Index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookieparser": "^0.1.0",
-    "expressjs": "^1.0.1",
-    "firebase": "^9.3.0",
-    "fs": "0.0.1-security",
-    "jsonwebtoken": "^8.5.1",
-    "passport": "^0.5.0",
-    "passport-http": "^0.3.0"
+    "firebase": "^9.4.0",
+    "http-server": "^14.0.0",
+    "uuid": "^8.3.2"
   }
 }
