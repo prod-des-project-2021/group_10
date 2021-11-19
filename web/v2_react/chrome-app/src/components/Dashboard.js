@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useNavigate } from "react-router-dom"
+import UploadForm from "./UploadForm"
+import ImageGrid from "./ImageGrid"
 
 export default function Dashboard() {
     const [error, setError] = useState("")
@@ -20,6 +22,13 @@ export default function Dashboard() {
 
     return (
         <>
+            <Card>
+                <Card.Body>
+                    <h2 className="text-center mb-4">Upload</h2>
+                    <UploadForm/>
+                </Card.Body>
+            </Card>
+            <ImageGrid/>
             <Card>
                 <Card.Body>
                     <h2 className="text-center mb-4">Profile</h2>
