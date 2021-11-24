@@ -1,0 +1,33 @@
+{
+    "manifest_version": 3,
+    "name": "PDIProject",
+    "version": "1.0.0",
+    "description": "pög",
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [  
+                "tesseract.js",
+                "content.js"
+            ]
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    }, 
+    "background": {
+        "service_worker": "background.js" 
+    },
+    "icons": {
+        "16": "./icons/icon16.png",
+        "64": "./icons/icon64.png"
+    },
+    "permissions": [
+        "scripting",
+        "activeTab",
+        "notifications"
+    ],
+    "host_permissions": ["<all_urls>"]
+}
