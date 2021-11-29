@@ -1,17 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from "../contexts/AuthContext"
-import { Link, useNavigate } from "react-router-dom"
+import {  useNavigate } from "react-router-dom"
 import UploadForm from "./UploadForm"
 import ImageGrid from "./ImageGrid"
 import Modal from "./Modal"
-import MenuAppbar from "./MenuAppBar"
+import MenuAppBar from "./MenuAppBar"
+import { ToolbarContext } from "../contexts/ToolbarContext"
 
 export default function Dashboard() {
     const [error, setError] = useState("")
-    const { currentUser, logout } = useAuth()
+    const { logout } = useAuth()
     const [selectedImg, setSelectedImg] = useState(null)
     const navigate = useNavigate()
+    const { setText } = useContext(ToolbarContext)
+
+    setText("Photos")
+
     async function handleLogout() {
         setError('')
 
@@ -25,7 +30,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <MenuAppbar/>
+            <MenuAppBar/>
             <Card className="card">
                 <Card.Body>
                     <h2 className="text-center mb-4">Upload</h2>
@@ -33,17 +38,8 @@ export default function Dashboard() {
                 </Card.Body>
             </Card>
             <ImageGrid setSelectedImg={setSelectedImg}/>
-            <Card>
-                <Card.Body>
-                    <h2 className="text-center mb-4">Profile</h2>
-                    {error && <Alert variant="danger">{error}</Alert>}
-                    <strong>Email: </strong> {currentUser.email}
-                    <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
-                        Update profile
-                    </Link>
-                </Card.Body>
-            </Card>
             { selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg}/> }
+            {error && <Alert variant="danger">{error}</Alert>}
             <div className="w-100 text-center mt-2">
             <Button variant="link" onClick={handleLogout}>Log out</Button>
             </div>

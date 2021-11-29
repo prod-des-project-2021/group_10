@@ -1,7 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useContext } from 'react'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import MenuAppBar from "./MenuAppBar"
+import { ToolbarContext } from '../contexts/ToolbarContext'
 
 export default function UpdateProfile() {
     const emailRef = useRef()
@@ -10,6 +12,7 @@ export default function UpdateProfile() {
     const { currentUser, updateEmail, updatePassword }  = useAuth()
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
+    const { setText } = useContext(ToolbarContext)
     const navigate = useNavigate()
 
     function handleSubmit(e) {
@@ -32,7 +35,7 @@ export default function UpdateProfile() {
         }
         
         Promise.all(promises).then(() => {
-            navigate("/")
+            navigate(-1)
         }).catch(() => {
             setError("Failed to update account")
         }).finally(() => {
@@ -40,8 +43,11 @@ export default function UpdateProfile() {
         })
     }
 
+    setText("Update your profile")
+
     return (
         <>
+        <MenuAppBar/>
         <Card>
             <Card.Body>
                 <h2 className="text-center mb-4">Update profile</h2>
@@ -65,9 +71,6 @@ export default function UpdateProfile() {
                 </Form>
             </Card.Body>
         </Card>
-        <div className="w-100 text-center mt-2">
-            <Link to="/">Cancel</Link>
-        </div>
         </>
     )
 }
