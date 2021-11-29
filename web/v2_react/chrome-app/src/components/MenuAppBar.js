@@ -4,32 +4,68 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import ArrowCircleLeft from '@mui/icons-material/ArrowCircleLeft';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import { useNavigate } from "react-router-dom"
+import Alert from 'react'
+import { ToolbarContext } from "../contexts/ToolbarContext"
 
 export default function MenuAppBar() {
     const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [error, setError] = React.useState('');
+    const navigate = useNavigate()
+    const { text } = React.useContext(ToolbarContext)
   
     const handleChange = (event) => {
       setAuth(event.target.checked);
     };
-  
-    const handleMenu = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-  
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-  
+    
+    function handleProfile() {
+      try {
+        setError("")
+        navigate("/profile")
+      } catch(e) {
+          setError(e.toString)
+      }
+    }
+
+    function handleDashboard() {
+      try {
+        setError("")
+        navigate(-1)
+      } catch(e) {
+          setError(e.toString)
+      }
+    }
+
+    function handleUpdate() {
+      try {
+        setError("")
+        navigate(-1)
+      } catch(e) {
+          setError(e.toString)
+      }
+    }
+
+    function handleRoutes(text) {
+      switch(text) {
+        case "Photos":
+          return <AccountCircle onClick={handleProfile}/>
+        case "Profile":
+          return <ArrowCircleLeft onClick={handleDashboard}/>
+        case "Update your profile":
+          return <ArrowCircleLeft onClick={handleUpdate}/>
+        default:
+          return <AccountCircle onClick={handleProfile}/>
+      }
+    }
+
     return (
       <Box sx={{ flexGrow: 1 }}>
+        {error && <Alert variant="danger">{error}</Alert>}
         <FormGroup>
           <FormControlLabel
             control={
@@ -44,17 +80,8 @@ export default function MenuAppBar() {
         </FormGroup>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Photos
+            <Typography id="selection" variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              {text}
             </Typography>
             {auth && (
               <div>
@@ -62,30 +89,11 @@ export default function MenuAppBar() {
                   size="large"
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
+                  aria-haspopup="false"
                   color="inherit"
                 >
-                  <AccountCircle />
+                  {handleRoutes(text)}
                 </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                </Menu>
               </div>
             )}
           </Toolbar>
