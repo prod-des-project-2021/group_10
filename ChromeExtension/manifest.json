@@ -8,7 +8,7 @@
             "matches": [
                 "<all_urls>"
             ],
-            "js": [  
+            "js": [
                 "tesseract.js",
                 "content.js"
             ]
