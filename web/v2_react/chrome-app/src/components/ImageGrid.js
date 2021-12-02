@@ -3,7 +3,7 @@ import useFirestore from '../hooks/useFirestore'
 import { useAuth } from '../contexts/AuthContext'
 import { motion } from 'framer-motion'
 
-export default function ImageGrid({setSelectedImg}) {
+export default function ImageGrid({setSelectedImg, setSelectedText}) {
     const { currentUser } = useAuth()
     const { docs } = useFirestore(currentUser.uid)
 
@@ -15,6 +15,7 @@ export default function ImageGrid({setSelectedImg}) {
                 whileHover={{ opacity: 1}}
                 onClick={() => {
                 setSelectedImg(doc.url)
+                setSelectedText(doc.text)
             }}>
                 <motion.img src={doc.url} alt="uploaded pic"
                     initial={{ opacity: 0 }}

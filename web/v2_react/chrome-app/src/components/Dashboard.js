@@ -1,7 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { Card, Button, Alert } from 'react-bootstrap'
-import { useAuth } from "../contexts/AuthContext"
-import {  useNavigate } from "react-router-dom"
+import { Card } from 'react-bootstrap'
 import UploadForm from "./UploadForm"
 import ImageGrid from "./ImageGrid"
 import Modal from "./Modal"
@@ -9,24 +7,11 @@ import MenuAppBar from "./MenuAppBar"
 import { ToolbarContext } from "../contexts/ToolbarContext"
 
 export default function Dashboard() {
-    const [error, setError] = useState("")
-    const { logout } = useAuth()
     const [selectedImg, setSelectedImg] = useState(null)
-    const navigate = useNavigate()
+    const [selectedText, setSelectedText] = useState(null)
     const { setText } = useContext(ToolbarContext)
 
     setText("Photos")
-
-    async function handleLogout() {
-        setError('')
-
-        try{
-            await logout()
-            navigate("/login")
-        } catch{
-            setError("Failed to log out")
-        }
-    }
 
     return (
         <>
@@ -37,12 +22,8 @@ export default function Dashboard() {
                     <UploadForm/>
                 </Card.Body>
             </Card>
-            <ImageGrid setSelectedImg={setSelectedImg}/>
-            { selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg}/> }
-            {error && <Alert variant="danger">{error}</Alert>}
-            <div className="w-100 text-center mt-2">
-            <Button variant="link" onClick={handleLogout}>Log out</Button>
-            </div>
+            <ImageGrid setSelectedImg={setSelectedImg} setSelectedText={setSelectedText}/>
+            { selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} setSelectedText={setSelectedText} selectedText={selectedText}/> }
         </>
     )
 }
