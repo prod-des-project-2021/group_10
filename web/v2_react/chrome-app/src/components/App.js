@@ -8,6 +8,7 @@ import Login from "./Login"
 import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
 import Profile from "./Profile"
+import Gdpr from "./Gdpr"
 import PrivateRoute from "./PrivateRoute"
 import { ToolbarContext } from "../contexts/ToolbarContext"
 
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/forgot-password" element={<ForgotPassword/>}/>
                     <Route exact path="/profile" element={<Profile/>}/>
+                    <Route path="/gdpr" element={<Gdpr/>}/>
                 </Routes>
               </ToolbarContext.Provider>
             </AuthProvider>
