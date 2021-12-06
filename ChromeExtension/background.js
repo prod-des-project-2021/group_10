@@ -5,18 +5,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log(request)
     
     if (request.command == "notification_start") {
-        console.log("in notification_start") 
         chrome.notifications.create(NOTIFICATION_ONE, {
             type: "basic",
             title: "PDIProject",
-            message: "Translating text...",
+            message: "Translating image...",
             iconUrl: "./icons/icon64.png"
         })  
     }; 
 
     if (request.command == "notification_finish") { 
         chrome.notifications.clear(NOTIFICATION_ONE); 
-        console.log("notification_finish")  
         chrome.notifications.create(NOTIFICATION_TWO, {
             type: "basic",
             title: "PDIProject",
@@ -25,7 +23,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         })  
         setTimeout(() => {
             chrome.notifications.clear(NOTIFICATION_TWO);
-            console.log("noti cleared") 
         }, 4000); 
     };
+
+    if (request.command == "create") { 
+        chrome.windows.create({ url: "saveimage.html", type: "popup", width: 500, height: 400, focused: false})
+        setTimeout(() => {
+            chrome.runtime.sendMessage({command: "saveimage", src: request.src}) 
+        }, 200)
+    }
 });

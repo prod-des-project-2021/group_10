@@ -1,8 +1,11 @@
 {
     "manifest_version": 3,
     "name": "PDIProject",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "pög",
+    "action": {
+        "default_popup": "popup.html"
+    },
     "content_scripts": [
         {
             "matches": [
@@ -10,13 +13,11 @@
             ],
             "js": [
                 "tesseract.js",
-                "content.js"
+                "content.js",
+                "saveimage.js"
             ]
         }
     ],
-    "action": {
-        "default_popup": "popup.html"
-    }, 
     "background": {
         "service_worker": "background.js" 
     },
