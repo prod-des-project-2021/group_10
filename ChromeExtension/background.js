@@ -1,9 +1,10 @@
 const NOTIFICATION_ONE = 'notificationOne'
 const NOTIFICATION_TWO = 'notificationTwo'
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => { 
     console.log(request)
     
-    if (request.type == "notification_start") {
+    if (request.command == "notification_start") {
         console.log("in notification_start") 
         chrome.notifications.create(NOTIFICATION_ONE, {
             type: "basic",
@@ -12,7 +13,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             iconUrl: "./icons/icon64.png"
         })  
     }; 
-    if (request.type == "notification_finish") { 
+
+    if (request.command == "notification_finish") { 
         chrome.notifications.clear(NOTIFICATION_ONE); 
         console.log("notification_finish")  
         chrome.notifications.create(NOTIFICATION_TWO, {
@@ -26,5 +28,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             console.log("noti cleared") 
         }, 4000); 
     };
-    
 });
