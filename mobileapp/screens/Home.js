@@ -1,21 +1,16 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import {
-  Headline,
-  Paragraph,
-  Button,
-  TouchableOpacity,
-} from 'react-native-paper';
-import Camera from './camera';
+import {Button} from 'react-native-paper';
 
 const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Image
+      <Text style={styles.loginText}>Succesfully logged in!</Text>
+      {/* <Image
         style={styles.image}
         source={{uri: 'http://via.placeholder.com/300'}}
-      />
-      <View style={{flexDirection: 'row'}}>
+      /> */}
+      <View style={styles.buttonView}>
         <Button
           style={styles.button}
           onPress={() => navigation.navigate('Camera')}>
@@ -35,24 +30,41 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    marginTop: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: 'yellow',
+    // alignSelf: 'center',
+    // backgroundColor: 'yellow',
+    marginBottom: 35,
   },
+
+  loginText: {
+    fontSize: 40,
+    color: 'blue',
+  },
+
   button: {
     backgroundColor: 'darkblue',
     width: '30%',
     borderRadius: 10,
-    elevation: 10,
-    alignSelf: 'center',
+    justifyContent: 'space-between',
+    // elevation: 10,
+    // alignSelf: 'center',
+    padding: 5,
+  },
+  buttonView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
   },
   text: {
     color: 'white',
   },
   image: {
-    width: 300,
-    height: 500,
+    width: '100%',
+    height: '95%',
     alignSelf: 'center',
     resizeMode: 'stretch',
   },

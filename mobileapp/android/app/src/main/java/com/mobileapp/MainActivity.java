@@ -1,5 +1,4 @@
 package com.mobileapp;
-
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
 
