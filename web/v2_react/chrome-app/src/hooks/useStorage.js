@@ -25,7 +25,7 @@ export default function useStorage(file, lang) {
             for (let files of fileArray) {
                 if(files.name === file.name) {
                     setError("Image exists")
-                    console.log("error")
+                    console.log(error)
                 }
             }
         })
