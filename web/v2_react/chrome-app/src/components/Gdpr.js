@@ -30,7 +30,7 @@ export default function Gdpr() {
             <h2 className="text-center mb-4">Please review the terms and conditions</h2>
             <div>
                 <p> Welcome to our website. If you continue to browse and use this website, you are agreeing to comply with and be bound by the following terms and conditions of use, which together with our privacy policy govern [business name]’s relationship with you in relation to this website. If you disagree with any part of these terms and conditions, please do not use our website. </p>
-                <p> The term ‘project’ or ‘us’ or ‘we’ refers to the owner of the website whose registered office is [address]. Our company registration number is [company registration number and place of registration]. The term ‘you’ refers to the user or viewer of our website.</p>
+                <p> The term ‘[business name]’ or ‘us’ or ‘we’ refers to the owner of the website whose registered office is [address]. Our company registration number is [company registration number and place of registration]. The term ‘you’ refers to the user or viewer of our website.</p>
                 <p> The content of the pages of this website is for your general information and use only. It is subject to change without notice.</p>
                 <p> This project stores your data (email, pictures and text extracted from those pictures) in a Firebase database. Once signed up, your password will not be visible</p>
                 <p> We will not give your data to third parties without your consent</p>

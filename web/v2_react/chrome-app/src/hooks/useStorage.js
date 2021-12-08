@@ -9,6 +9,8 @@ export default function useStorage(file, lang) {
     const [error, setError] = useState('')
     const [url, setUrl] = useState('')
     const { currentUser } = useAuth()
+    const [recognizeText, setRecognizeText] = useState(null)
+    const [isOCR, setIsOCR] = useState(null)
 
 
     useEffect(() => {
@@ -25,7 +27,7 @@ export default function useStorage(file, lang) {
             for (let files of fileArray) {
                 if(files.name === file.name) {
                     setError("Image exists")
-                    console.log(error)
+                    console.log("error")
                 }
             }
         })
@@ -37,8 +39,11 @@ export default function useStorage(file, lang) {
         }, async () => {
             const url = await storageRef.getDownloadURL()
             const createdAt = timestamp()
+            setIsOCR(true)
             const worker = createWorker({
-                logger: m => console.log(m)
+                logger: (m) => {
+                    setRecognizeText(m.progress)
+                    console.log(m)}
             })
             await worker.load();
             await worker.loadLanguage(lang);
@@ -46,10 +51,11 @@ export default function useStorage(file, lang) {
             const { data: { text } } = await worker.recognize(url);
             console.log(text);
             await worker.terminate();
+            setIsOCR(false)
             collectionRef.add({ url, createdAt, text })
             setUrl(url)
         })
     }, [file, currentUser, lang, error])
 
-    return { progress, url, error }
+    return { progress, url, error, recognizeText, isOCR }
 }
