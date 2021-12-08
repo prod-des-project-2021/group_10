@@ -10,7 +10,14 @@ export default function Profile() {
     const { setText } = useContext(ToolbarContext)
 
     setText("Profile")
-    
+
+    function handleEmail(currentUser) {
+        if(currentUser != null && currentUser.email != null){
+            return currentUser.email
+        } else {
+            return ""
+        }
+    }
 
     return (
         <>
@@ -18,7 +25,7 @@ export default function Profile() {
             <Card>
                     <Card.Body>
                         <h2 className="text-center mb-4">Profile</h2>
-                        <strong>Email: </strong> {currentUser.email}
+                        <strong>Email: </strong> {handleEmail(currentUser)}
                         <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
                             Update profile
                         </Link>

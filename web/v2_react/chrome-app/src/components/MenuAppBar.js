@@ -12,15 +12,18 @@ import FormGroup from '@mui/material/FormGroup';
 import { useNavigate } from "react-router-dom"
 import Alert from 'react'
 import { ToolbarContext } from "../contexts/ToolbarContext"
+import { useAuth } from "../contexts/AuthContext"
 
 export default function MenuAppBar() {
     const [auth, setAuth] = React.useState(true);
     const [error, setError] = React.useState('');
     const navigate = useNavigate()
     const { text } = React.useContext(ToolbarContext)
+    const { logout } = useAuth()
   
-    const handleChange = (event) => {
+    const handleChange = async (event) => {
       setAuth(event.target.checked);
+      await logout()
     };
     
     function handleProfile() {
