@@ -19,9 +19,9 @@ export default function MenuAppBar() {
     const [error, setError] = React.useState('');
     const navigate = useNavigate()
     const { text } = React.useContext(ToolbarContext)
-    const { logout } = useAuth()
+    const { logout, currentUser } = useAuth()
   
-    const handleChange = async (event) => {
+    const handleChange = async(event) => {
       setAuth(event.target.checked);
       await logout()
     };
@@ -37,6 +37,7 @@ export default function MenuAppBar() {
 
     function handleDashboard() {
       try {
+        currentUser.reload()
         setError("")
         navigate(-1)
       } catch(e) {

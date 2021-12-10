@@ -1,15 +1,31 @@
-import React, { useState, useContext } from 'react'
-import { Card } from 'react-bootstrap'
+import React, { useState, useContext, useEffect } from 'react'
+import { Card, Alert } from 'react-bootstrap'
 import UploadForm from "./UploadForm"
 import ImageGrid from "./ImageGrid"
 import Modal from "./Modal"
 import MenuAppBar from "./MenuAppBar"
 import { ToolbarContext } from "../contexts/ToolbarContext"
+import { useAuth } from "../contexts/AuthContext"
 
 export default function Dashboard() {
     const [selectedImg, setSelectedImg] = useState(null)
     const [selectedText, setSelectedText] = useState(null)
+    const [isEmail, setIsEmail] = useState(null)
+    const [error, setError] = useState(null)
     const { setText } = useContext(ToolbarContext)
+    const { currentUser } = useAuth()
+
+    useEffect(() => {
+         try {
+             if(currentUser.emailVerified === false) {
+                 setIsEmail(false)
+             } else {
+                 setIsEmail(true)
+             }
+         } catch(e) {
+             setError(e)
+         }
+     }, [currentUser])
 
     setText("Photos")
 
@@ -18,6 +34,8 @@ export default function Dashboard() {
             <MenuAppBar/>
             <Card className="card">
                 <Card.Body>
+                    {!isEmail && <Alert variant="danger">Email not verified, please verify your email address</Alert>}
+                    {error && <Alert variant="danger">{error}</Alert>}
                     <h2 className="text-center mb-4">Upload</h2>
                     <UploadForm/>
                 </Card.Body>

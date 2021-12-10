@@ -1,13 +1,16 @@
-import React, { useContext } from 'react'
-import { Card } from 'react-bootstrap'
+import React, { useContext, useState, useEffect } from 'react'
+import { Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link } from "react-router-dom"
 import MenuAppBar from "./MenuAppBar"
 import { ToolbarContext } from "../contexts/ToolbarContext"
 
 export default function Profile() {
-    const { currentUser } = useAuth()
+    const { currentUser, sendVerificationEmail } = useAuth()
     const { setText } = useContext(ToolbarContext)
+    const [isEmail, setIsEmail] = useState(null)
+    const [error, setError] = useState(null)
+    const [button, setButton] = useState(true)
 
     setText("Profile")
 
@@ -19,6 +22,23 @@ export default function Profile() {
         }
     }
 
+    function handleEmailSubmit() {
+        sendVerificationEmail()
+        setButton(false)
+    }
+
+    useEffect(() => {
+        try {
+            if(currentUser.emailVerified === false) {
+                setIsEmail(false)
+            } else {
+                setIsEmail(true)
+            }
+        } catch(e) {
+            setError(e)
+        }
+    }, [currentUser])
+
     return (
         <>
             <MenuAppBar/>
@@ -29,6 +49,11 @@ export default function Profile() {
                         <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
                             Update profile
                         </Link>
+                        {error && <Alert variant="danger">{error}</Alert>}
+                        {!button && <Alert variant="success">Verification sent</Alert>}
+                        {(!isEmail && button) && <Button className="btn btn-primary w-100 mt-3" onClick={handleEmailSubmit}>
+                            Resend verification email
+                        </Button>}
                     </Card.Body>
                 </Card>
         </>
