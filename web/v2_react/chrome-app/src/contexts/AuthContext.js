@@ -14,6 +14,11 @@ export function AuthProvider({ children }) {
         return auth.createUserWithEmailAndPassword(email, password)
     }
 
+    function sendVerificationEmail() {
+        auth.useDeviceLanguage()
+        auth.currentUser.sendEmailVerification()
+    }
+
     function login(email, password) {
         return auth.signInWithEmailAndPassword(email, password)
     }
@@ -38,7 +43,6 @@ export function AuthProvider({ children }) {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user)
             setLoading(false)
-            
         })
 
         return unsubscribe
@@ -51,7 +55,8 @@ export function AuthProvider({ children }) {
         logout,
         resetPassword,
         updateEmail,
-        updatePassword }
+        updatePassword,
+        sendVerificationEmail }
 
 
     return (
