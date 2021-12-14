@@ -1,8 +1,14 @@
 {
     "manifest_version": 3,
     "name": "PDIProject",
-    "version": "1.0.1",
-    "description": "pög",
+    "version": "1.1.3",
+    "description": "'final touches' -edition",
+    "permissions": [
+        "scripting",
+        "activeTab",
+        "notifications",
+        "storage"
+    ],
     "action": {
         "default_popup": "popup.html"
     },
@@ -13,8 +19,7 @@
             ],
             "js": [
                 "tesseract.js",
-                "content.js",
-                "saveimage.js"
+                "cropper.js"
             ]
         }
     ],
@@ -25,10 +30,6 @@
         "16": "./icons/icon16.png",
         "64": "./icons/icon64.png"
     },
-    "permissions": [
-        "scripting",
-        "activeTab",
-        "notifications"
-    ],
+
     "host_permissions": ["<all_urls>"]
 }

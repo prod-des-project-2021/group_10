@@ -1,11 +1,36 @@
 body {
-    width: 370;
-    height: 120;
     margin: 0;
     padding: 0;
     overflow: hidden;
+  }
+#container {    
+    position: relative;
+    height: 90%;
 }
- 
+#imageid { 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#saveButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+}
+#loggingButton:hover {
+    background-color: #0b5ed7;
+}
 #loggingButton {
     background-color: #0d6efd;
     outline-offset: 4px;
@@ -13,28 +38,9 @@ body {
     font-size: 14px;
     font-weight: bold;
     padding: 6px 6px;
-    border: 1px solid rgb(59, 59, 59, 0.4);
+    border: 1px solid rgba(59, 59, 59, 0.3);
     border-radius: 2px;
     cursor: pointer;
-}
-#loggingButton:hover {
-    background-color: #0b5ed7;
-}
-.otherButton {
-    border: 1px solid rgb(59, 59, 59, 0.4);
-    box-shadow: 10px;
-    margin: 10px 10px 0px 10px;
-    background-color: #0d6efd;
-    outline-offset: 4px;
-    color: #FFF;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 5px 50px;
-    border-radius: 2px;
-    cursor: pointer;
-}
-.otherButton:hover {
-    background-color: #0b5ed7;
 }
 #topbar {
     background: rgb(255,255,255);
@@ -83,23 +89,4 @@ body {
     color: #0d6efd;
     margin-right: 20px;
     font-size: 14px;
-}
-#container {
-    display: flex;
-    justify-content: center;
-    align-content:center
-}
-@keyframes rolling {
-    from {left: 350px;}
-    to {left: -200;}
-}
-#cat {
-    position: absolute;
-    top: 20px;
-    left: 350px;
-    width: 150px;
-    z-index: -1;
-    animation-name: rolling;
-    animation-duration: 12s;
-    animation-iteration-count: infinite;
 }
