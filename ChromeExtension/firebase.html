@@ -1,6 +1,6 @@
 <html> 
     <head>
-        <link rel="stylesheet" href="css/popup.css">  
+        <link rel="stylesheet" href="css/firebase.css">  
     </head>
     <body>
         <div id="topbar">
@@ -14,16 +14,16 @@
             target="_blank" rel="noopener noreferrer">Sign up</a>
         </div>
         <div id="container">
-            <button class="otherButton" id="openButton">Open</button>
-            <button class="otherButton" id="cropButton">Crop</button>
-        </div> 
-            <img id="cat" src="icons/rollingcat.gif"> 
+            <img id="imageid" src="" alt="No Image">
+            <br>
+            <button id="saveButton">Save Image</button>
+        </div>
         
         <script src="firebase_v8/firebase-app.js"></script>
         <script src="firebase_v8/firebase-auth.js"></script>
         <script src="firebase_v8/firebase-storage.js"></script>
         <script src="firebase_v8/firebase-firestore.js"></script>
         <script src="firebase_v8/firebase-database.js"></script>
-        <script src="popup.js"></script>
+        <script src="firebase.js"></script>
     </body>
 </html> 

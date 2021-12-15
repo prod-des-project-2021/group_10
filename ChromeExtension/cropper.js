@@ -1,11 +1,8 @@
 const imageToText = (url) => { 
     chrome.runtime.sendMessage({command: "notification_start"});
     Tesseract.recognize( url, 'eng',
-    { logger: m => {
-        console.log(m.progress) 
-    }}
         ).then(({ data: { text } }) => {  
-        chrome.runtime.sendMessage({command: "notification_finish"});
+        chrome.runtime.sendMessage({command: "notification_finish", url: url, createWindow: true});
         navigator.clipboard.writeText(text);  
     });
 };
@@ -24,14 +21,53 @@ const enableScrolling = () => {
 
 const resizePixelRatio = (val) => { 
     let result = Math.round(val * window.devicePixelRatio)
-    console.log(result)
     return result
 }
 
+const afterDOMLoaded = () => {
+    try {
+        let test = document.querySelector(".w-100").childNodes
+        const waitChildNodes = () => {
+            if (test.length == 0) {
+                setTimeout(() => {
+                    waitChildNodes()
+                }, 100);
+            } else {
+                let test2 = test[2].childNodes
+                const waitChildNodesAgain = () => {
+                    if (test2.length == 0) {
+                        setTimeout(() => {
+                            waitChildNodesAgain()
+                        }, 100);
+                    } else {
+                        for (let ele of test2) {
+                            ele.onclick = () => {
+                                chrome.runtime.sendMessage({command: "notification_start"});
+                                Tesseract.recognize( ele.childNodes[0].src, 'eng',
+                                    ).then(({ data: { text } }) => {  
+                                    chrome.runtime.sendMessage({command: "notification_finish", createWindow: false});
+                                    navigator.clipboard.writeText(text);  
+                                });
+                            }
+                        }
+                    }
+                }
+                waitChildNodesAgain()
+            }
+        }
+        waitChildNodes()
+    } catch {
+        return
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener("DOMContentLoading", afterDOMLoaded)
+} else {
+    afterDOMLoaded();
+}
 
 chrome.runtime.onMessage.addListener((request, sender, response) => { 
-    console.log(request)
-
     if (request.command == "crop") { 
         let cropping = true;
         disableScrolling();
@@ -57,26 +93,18 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 
         document.body.onmousedown = (e) => {
             if (cropping){
-                console.log("mouse down");
-
-                ctx.rect(100, 150, 200, 150)
-                ctx.fillStyle ='yellow'
-                ctx.fill();
-
+                //ctx.rect(100, 150, 200, 150)
+                //ctx.fillStyle ='yellow'
+                //ctx.fill();
                 mouseCoordinates.mousedownX = resizePixelRatio(e.clientX);
                 mouseCoordinates.mousedownY = resizePixelRatio(e.clientY);
-                console.log(e);
             }
         };
         document.body.onmouseup = (e) => {
             if (cropping) {
                 let browserZoomlevel = window.devicePixelRatio
-                console.log("mousezooom",browserZoomlevel)
-                console.log("mouse up");
-                console.log(e);
                 mouseCoordinates.mouseupX = resizePixelRatio(e.clientX);
                 mouseCoordinates.mouseupY = resizePixelRatio(e.clientY); 
-                console.log(mouseCoordinates);
                 enableScrolling();
                 cropping = false;
 
@@ -93,9 +121,6 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
                     let ctx = canvas.getContext('2d');
                     let croppedWidth = mouseCoordinates.mouseupX - mouseCoordinates.mousedownX;
                     let croppedHeight = mouseCoordinates.mouseupY - mouseCoordinates.mousedownY;
-                    
-                    console.log(croppedWidth)
-                    console.log(croppedHeight)
 
                     ctx.drawImage(screenshot, mouseCoordinates.mousedownX, mouseCoordinates.mousedownY,
                         croppedWidth, croppedHeight,
@@ -115,11 +140,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     
                         imageURL = croppedcanvas.toDataURL('image/jpeg');
                         screenshot.src = imageURL
-                        console.log(screenshot.src)
-                        imageToText(screenshot.src)
-                        setTimeout(() => {
-                            chrome.runtime.sendMessage({command:"create", src: screenshot.src})
-                        }, 100)
+                        imageToText(screenshot.src) 
                     },100) 
                 }, 100)
             };
