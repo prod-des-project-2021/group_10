@@ -27,12 +27,15 @@ export default function Profile() {
         setButton(false)
     }
 
+    //for email validation, could be done better but does the job for now
     useEffect(() => {
         try {
-            if(currentUser.emailVerified === false) {
-                setIsEmail(false)
-            } else {
-                setIsEmail(true)
+            if(currentUser != null && currentUser.email != null) {
+                if(currentUser.emailVerified === false) {
+                    setIsEmail(false)
+                } else {
+                    setIsEmail(true)
+                }
             }
         } catch(e) {
             setError(e)

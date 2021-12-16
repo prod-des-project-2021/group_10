@@ -80,7 +80,7 @@ export default function MenuAppBar() {
               />
             }
             label={auth ? 'Logout' : 'Login'}
-          />
+            style={{color: "white"}}/>
         </FormGroup>
         <AppBar position="static">
           <Toolbar>

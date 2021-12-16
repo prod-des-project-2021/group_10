@@ -27,7 +27,7 @@ export default function Login() {
 
     return (
         <>
-        <Card>
+        <Card style={{marginTop: '100px'}}>
             <Card.Body>
                 <h2 className="text-center mb-4">Log in</h2>
                 {error && <Alert variant="danger">{error}</Alert>}
@@ -40,14 +40,15 @@ export default function Login() {
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" ref={passwordRef} required></Form.Control>
                     </Form.Group>
-                    <Button disabled={loading} className="w-100" type="submit">Log in</Button>
+                    <Button disabled={loading} className="w-100" type="submit"
+                    style={{marginTop: '40px'}}>Log in</Button>
                 </Form>
                 <div className="w-100 text-center mt-2">
                     <Link to="/forgot-password">Forgot password?</Link>
                 </div>
             </Card.Body>
         </Card>
-        <div className="w-100 text-center mt-2">
+        <div className="w-100 text-center mt-2" style={{color: "white"}}>
             Need an account? <Link to="/Signup">Sign up</Link>
         </div>
         </>
