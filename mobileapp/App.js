@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider as PaperProvider} from 'react-native-paper';
 
-
 import Signup from './screens/Signup';
 import Imagepicker from './screens/Imagepicker';
 import {
@@ -36,7 +35,6 @@ const App = () => {
           initialRouteName="Signup"
           screenOptions={{headerShown: false}}>
           <Stack.Screen name="Signup" component={Signup} />
-          
           <Stack.Screen name="Imagepicker" component={Imagepicker} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -55,7 +53,6 @@ const styles = StyleSheet.create({
   button: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'green',
   },
   home: {
     flex: 1,

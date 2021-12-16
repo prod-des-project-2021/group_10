@@ -4,6 +4,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import firebase from '@react-native-firebase/app';
+
 import {
   View,
   Text,
@@ -13,13 +14,17 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
 const Imagepicker = ({navigation}) => {
-  const [image, setImage] = useState('https://via.placeholder.com/150');
-  // const [uploading, setUploading] = useState(false);
-  // const [transferred, setTransferred] = useState(0);
+  const [image, setImage] = useState(
+    'https://www.logistec.com/wp-content/uploads/2017/12/placeholder.png',
+  );
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -58,7 +63,6 @@ const Imagepicker = ({navigation}) => {
       .signOut()
       .then(() => {
         navigation.navigate('Signup');
-        alert('logged out');
       })
       .catch(err => {
         alert(err.message);
@@ -72,10 +76,24 @@ const Imagepicker = ({navigation}) => {
     // console.log(filename);
     const storageRef = storage().ref(filename);
     const task = storageRef.putFile(uploadUri);
+    setUploading(true);
+    setTransferred(0);
+
+    task.on('state_changed', taskSnapshot => {
+      console.log(
+        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+      );
+
+      setTransferred(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+          100,
+      );
+    });
 
     try {
       await task;
       const url = await storageRef.getDownloadURL();
+      setUploading(false);
       Alert.alert('Image uploaded successfully');
       return url;
     } catch (err) {
@@ -101,32 +119,56 @@ const Imagepicker = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.login}>Logged in as: {auth().currentUser.email}</Text>
-      <Image source={{uri: image}} style={styles.image} />
-      <View style={styles.buttonContainer}>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={takePhotoFromCamera}>
-            <Text style={styles.text}>CAMERA</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={choosePhotoFromLibrary}>
-            <Text style={styles.text}>GALLERY</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.outerContainer}>
+      <ImageBackground
+        source={require('../images/background.png')}
+        style={styles.background}>
+        <View style={styles.container}>
+          {/* <Text style={styles.login}>
+            Logged in as: {auth().currentUser.email}
+          </Text> */}
+          {uploading ? (
+            <View>
+              <Text>{transferred} % Completed!</Text>
+              <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+          ) : (
+            <View />
+          )}
 
-        <View style={styles.button}>
-          <TouchableOpacity onPress={writeData}>
-            <Text style={styles.text}>SEND</Text>
-          </TouchableOpacity>
+          <Image source={{uri: image}} style={styles.image} />
+          <View style={styles.buttonContainer}>
+            <View style={styles.button}>
+              <TouchableOpacity onPress={takePhotoFromCamera}>
+                <Text style={styles.text}>CAMERA</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.button}>
+              <TouchableOpacity onPress={choosePhotoFromLibrary}>
+                <Text style={styles.text}>GALLERY</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.button}>
+              <TouchableOpacity onPress={writeData}>
+                <Text style={styles.text}>SEND</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.logOut}>
+            <TouchableOpacity onPress={logoutHandler}>
+              {/* <Text style={styles.text}>LOG OUT</Text> */}
+              <Image
+                style={styles.logoutImage}
+                source={require('../images/logout.png')}
+                rotation={180}
+                onPress={logoutHandler}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      <View style={styles.logOut}>
-        <TouchableOpacity onPress={logoutHandler}>
-          <Text style={styles.text}>LOG OUT</Text>
-        </TouchableOpacity>
-      </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -138,8 +180,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
-    elevation: 100,
   },
   text: {
     color: 'white',
@@ -149,12 +189,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginVertical: 50,
     flexDirection: 'row',
+    alignSelf: 'center',
   },
   logOut: {
     flexDirection: 'row',
     flex: 0,
-    alignSelf: 'flex-start',
-    marginHorizontal: 20,
+    alignItems: 'center',
     padding: 10,
     borderRadius: 10,
     backgroundColor: '#2396f1',
@@ -170,12 +210,29 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     resizeMode: 'stretch',
   },
+  logoutImage: {
+    width: 20,
+    height: 20,
+    tintColor: 'white',
+  },
   button: {
     width: 100,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     borderRadius: 50,
     backgroundColor: '#2396f1',
     padding: 10,
     borderRadius: 10,
+    // marginVertical: 10,
+  },
+  background: {
+    width: 1000,
+    height: 1000,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  outerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
   },
 });
