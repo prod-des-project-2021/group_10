@@ -32,7 +32,9 @@ function App() {
                     <Route path="/signup" element={<Signup/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                    <Route exact path="/profile" element={<Profile/>}/>
+                    <Route exact path="/profile" element={<PrivateRoute>
+                                                            <Profile/>
+                                                          </PrivateRoute>}/>
                     <Route path="/gdpr" element={<Gdpr/>}/>
                 </Routes>
               </ToolbarContext.Provider>

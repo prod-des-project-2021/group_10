@@ -34,7 +34,7 @@ export default function Signup() {
 
     return (
         <>
-        <Card>
+        <Card style={{marginTop: '100px'}}>
             <Card.Body>
                 <h2 className="text-center mb-4">Sign up</h2>
                 {error && <Alert variant="danger">{error}</Alert>}
@@ -51,11 +51,12 @@ export default function Signup() {
                         <Form.Label>Password Confirmation</Form.Label>
                         <Form.Control type="password" ref={passwordConfirmRef} required></Form.Control>
                     </Form.Group>
-                    <Button disabled={loading} className="w-100" type="submit">Sign up</Button>
+                    <Button disabled={loading} className="w-100" type="submit"
+                    style={{marginTop: '40px'}}>Sign up</Button>
                 </Form>
             </Card.Body>
         </Card>
-        <div className="w-100 text-center mt-2">
+        <div className="w-100 text-center mt-2" style={{color: "white"}}>
             Already have an account? <Link to="/login">Log in</Link>
         </div>
         </>
