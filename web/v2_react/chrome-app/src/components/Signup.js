@@ -52,7 +52,7 @@ export default function Signup() {
                         <Form.Control type="password" ref={passwordConfirmRef} required></Form.Control>
                     </Form.Group>
                     <Button disabled={loading} className="w-100" type="submit"
-                    style={{marginTop: '40px'}}>Sign up</Button>
+                    style={{marginTop: '20px'}}>Sign up</Button>
                 </Form>
             </Card.Body>
         </Card>
