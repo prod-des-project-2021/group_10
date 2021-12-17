@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let user = null;
 
     const firebaseConfig = {
-    // apiKey: XXXXXXXXXX
-    // authDomain: XXXXXXXXXXXXXX
-    // databaseURL: XXXXXXXXXX
-    // projectId: XXXXXXXX
-    // storageBucket: XXXXXXXXX
-    // messagingSenderId: XXXXXXXXXXX
-    // appId: XXXXXXXXXXXXXXXXXXXXX
+    // apiKey: "xxxxxxxxxxxxxxxxxxxxx",
+    // authDomain: "xxxxxxxxxxxxxxxxxxxxx",
+    // databaseURL: "xxxxxxxxxxxxxxxxxxxxx",
+    // projectId: "xxxxxxxxxxxxxxxxxxxxx",
+    // storageBucket: "xxxxxxxxxxxxxxxxxxxxx",
+    // messagingSenderId: "xxxxxxxxxxxxxxxxxxxxx",
+    // appId: "xxxxxxxxxxxxxxxxxxxxx"
     };
     
     const fb = firebase.initializeApp(firebaseConfig)

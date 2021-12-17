@@ -26,33 +26,37 @@ const resizePixelRatio = (val) => {
 
 const afterDOMLoaded = () => {
     try {
-        let test = document.querySelector(".w-100").childNodes
+        let x = document.querySelector(".w-100").childNodes
         const waitChildNodes = () => {
-            if (test.length == 0) {
+            if (x.length == 0) {
                 setTimeout(() => {
                     waitChildNodes()
                 }, 100);
             } else {
-                let test2 = test[2].childNodes
-                const waitChildNodesAgain = () => {
-                    if (test2.length == 0) {
-                        setTimeout(() => {
-                            waitChildNodesAgain()
-                        }, 100);
-                    } else {
-                        for (let ele of test2) {
-                            ele.onclick = () => {
-                                chrome.runtime.sendMessage({command: "notification_start"});
-                                Tesseract.recognize( ele.childNodes[0].src, 'eng',
-                                    ).then(({ data: { text } }) => {  
-                                    chrome.runtime.sendMessage({command: "notification_finish", createWindow: false});
-                                    navigator.clipboard.writeText(text);  
-                                });
+                try {
+                    let y = x[2].childNodes
+                    const waitChildNodesAgain = () => {
+                        if (y.length == 0) {
+                            setTimeout(() => {
+                                waitChildNodesAgain()
+                            }, 100);
+                        } else {
+                            for (let ele of y) {
+                                ele.onclick = () => {
+                                    chrome.runtime.sendMessage({command: "notification_start"});
+                                    Tesseract.recognize( ele.childNodes[0].src, 'eng',
+                                        ).then(({ data: { text } }) => {  
+                                        chrome.runtime.sendMessage({command: "notification_finish", createWindow: false});
+                                        navigator.clipboard.writeText(text);  
+                                    });
+                                }
                             }
                         }
                     }
-                }
                 waitChildNodesAgain()
+                } catch {
+                    return
+                }
             }
         }
         waitChildNodes()
@@ -72,18 +76,6 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         let cropping = true;
         disableScrolling();
 
-        let canvas = document.createElement("canvas");
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight;
-        canvas.style.position="absolute";
-        canvas.style.left=0;
-        canvas.style.top=0;
-        canvas.style.zIndex=100000;
-        canvas.style.pointerEvents="none";
-
-        let ctx = canvas.getContext("2d") 
-        document.body.appendChild(canvas)
-
         let mouseCoordinates = {
             mousedownX : 0,
             mousedownY : 0,
@@ -91,41 +83,62 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
             mouseupY : 0
         };
 
-        document.body.onmousedown = (e) => {
-            if (cropping){
-                //ctx.rect(100, 150, 200, 150)
-                //ctx.fillStyle ='yellow'
-                //ctx.fill();
+        let canvas = document.createElement("canvas");
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight;
+
+        canvas.style.position="absolute";
+        canvas.style.left=window.scrollX+"px";
+        canvas.style.top=window.scrollY+"px";
+        canvas.style.zIndex=100000;
+        canvas.style.pointerEvents="none"; 
+        let ctx = canvas.getContext("2d")
+        document.body.appendChild(canvas)
+        
+        document.body.onmousedown = (e) => { 
+            if (cropping) {
+                document.body.onmousemove = (e2) =>{
+                    let drawWidth = e2.clientX - e.clientX;
+                    let drawHeight =  e2.clientY - e.clientY;
+                    ctx.beginPath()
+                    ctx.clearRect(0, 0, canvas.width, canvas.height)
+                    ctx.rect(e.clientX, e.clientY, drawWidth, drawHeight )
+                    ctx.fillStyle = "rgba(0,0,0, 0.2)";
+                    ctx.fill();
+                }
+                
                 mouseCoordinates.mousedownX = resizePixelRatio(e.clientX);
                 mouseCoordinates.mousedownY = resizePixelRatio(e.clientY);
             }
         };
+
         document.body.onmouseup = (e) => {
             if (cropping) {
-                let browserZoomlevel = window.devicePixelRatio
+                document.body.onmousemove = null
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
                 mouseCoordinates.mouseupX = resizePixelRatio(e.clientX);
                 mouseCoordinates.mouseupY = resizePixelRatio(e.clientY); 
                 enableScrolling();
                 cropping = false;
 
-                let canvas = document.createElement('canvas');
+                let screenshotCanvas = document.createElement('canvas');
                 let screenshot = new Image();
                 screenshot.setAttribute("id", "imageID")
 
                 let imageURL = request.url;
                 screenshot.src = imageURL;
                 setTimeout(() => {
-                    canvas.width = screenshot.width;
-                    canvas.height = screenshot.height;
+                    screenshotCanvas.width = screenshot.width;
+                    screenshotCanvas.height = screenshot.height;
 
-                    let ctx = canvas.getContext('2d');
+                    let ctx = screenshotCanvas.getContext('2d');
                     let croppedWidth = mouseCoordinates.mouseupX - mouseCoordinates.mousedownX;
                     let croppedHeight = mouseCoordinates.mouseupY - mouseCoordinates.mousedownY;
 
                     ctx.drawImage(screenshot, mouseCoordinates.mousedownX, mouseCoordinates.mousedownY,
                         croppedWidth, croppedHeight,
                         0, 0, croppedWidth, croppedHeight);
-                    imageURL = canvas.toDataURL('image/jpeg');
+                    imageURL = screenshotCanvas.toDataURL('image/jpeg');
                     screenshot.src = imageURL;
 
                     setTimeout(() => {

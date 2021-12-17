@@ -10,13 +10,13 @@ const savebuttonON_HOVER = "#5c8cec"
 let user = null;
 
 const firebaseConfig = {
-    // apiKey: XXXXXXXXXX
-    // authDomain: XXXXXXXXXXXXXX
-    // databaseURL: XXXXXXXXXX
-    // projectId: XXXXXXXX
-    // storageBucket: XXXXXXXXX
-    // messagingSenderId: XXXXXXXXXXX
-    // appId: XXXXXXXXXXXXXXXXXXXXX
+    // apiKey: "xxxxxxxxxxxxxxxxxxxxx",
+    // authDomain: "xxxxxxxxxxxxxxxxxxxxx",
+    // databaseURL: "xxxxxxxxxxxxxxxxxxxxx",
+    // projectId: "xxxxxxxxxxxxxxxxxxxxx",
+    // storageBucket: "xxxxxxxxxxxxxxxxxxxxx",
+    // messagingSenderId: "xxxxxxxxxxxxxxxxxxxxx",
+    // appId: "xxxxxxxxxxxxxxxxxxxxx"
 };
 
 const fb = firebase.initializeApp(firebaseConfig)
@@ -78,10 +78,12 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         image.onload = () => {
             let buttonPadding = ((image.height/2)) + "px " + ((image.width/2)) + "px";
             saveButton.style.padding = buttonPadding;
-            if (image.width > window.innerWidth) {
-                window.resizeTo(image.width + 100, window.innerHeight + 50)
+            if ( image.height > window.innerHeight && image.width > window.innerWidth) {
+                window.resizeTo(image.width + 100, image.height + 150)
             } else if (image.height > window.innerHeight) {
                 window.resizeTo(window.innerWidth, image.height + 150)
+            } else if (image.width > window.innerWidth) { 
+                window.resizeTo(image.width + 100, window.innerHeight + 50)
             }
         }
     }
