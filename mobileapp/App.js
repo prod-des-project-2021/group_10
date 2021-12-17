@@ -3,8 +3,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider as PaperProvider} from 'react-native-paper';
 
-import Camera from './screens/camera';
-import Home from './screens/Home';
+import Signup from './screens/Signup';
+import Imagepicker from './screens/Imagepicker';
 import {
   Button,
   SafeAreaView,
@@ -25,17 +25,17 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+const Stack = createStackNavigator();
 
 const App = () => {
-  const Stack = createStackNavigator();
   return (
     <PaperProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="Signup"
           screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Camera" component={Camera} />
+          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="Imagepicker" component={Imagepicker} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
   button: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'green',
   },
   home: {
     flex: 1,

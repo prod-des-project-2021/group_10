@@ -1,6 +1,11 @@
 import React, {useState, useRef} from 'react';
 import {RNCamera} from 'react-native-camera';
 import {Headline, Paragraph, Button, TouchableRipple} from 'react-native-paper';
+// import RNFS from 'react-native-fs';
+// import TextRecognition from 'react-native-text-recognition';
+import {request, PERMISSIONS} from 'react-native-permissions';
+
+const tessOptions = {};
 
 import {
   View,
@@ -17,15 +22,56 @@ const Camera = ({navigation}) => {
   const ref = useRef();
 
   async function takePicture() {
-    setLoader(true);
-    const options = {base64: true, fixOrientation: true, writeExif: true};
-    const data = await ref.current.takePictureAsync(options);
-    console.log(data.uri, 'data');
-    const newImages = [...images];
-    newImages.push({uri: data.uri});
-    setImages(newImages);
+    try {
+      setLoader(true);
+      const options = {base64: true, fixOrientation: true, writeExif: true};
+      const data = await ref.current.takePictureAsync(options);
+      // const result = await TextRecognition.recognize(data.uri);
+
+      console.log(result);
+      // console.log(data.uri);
+      // console.log(data.uri, 'data');
+      // const newImages = [...images];
+      // newImages.push({uri: data.uri});
+      // setImages(newImages);
+      // const filePath = data.uri.path;
+      // const newFilePath = RNFS.ExternalCachesDirectoryPath + '/OcrImage.jpg';
+      // RNFS.moveFile(filePath, newFilePath)
+      //   .then(() => {
+      //     console.log('image moved to', newFilePath);
+      //   })
+      //   .catch(error => console.log(error));
+
+      // result = await TesseractOcr.recognize(
+      //   filePath,
+      //   LANG_ENGLISH,
+      //   tessOptions,
+      // );
+      // console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+
     setLoader(false);
   }
+
+  // const takePicture = async () => {
+  //   try {
+  //     const data = await takePictureAsync();
+  //     console.log(data.uri);
+  //     const filePath = data.uri;
+  //     const newFilePath = RNFS.ExternalDirectoryPath + '/MyTest.jpg';
+  //     RNFS.moveFile(filePath, newFilePath)
+  //       .then(() => {
+  //         console.log('IMAGE MOVED', filePath, '-- to --', newFilePath);
+  //       })
+  //       .catch(error => {
+  //         console.log(error);
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <View>
@@ -79,7 +125,7 @@ const styles = StyleSheet.create({
   },
   preview: {
     width: Dimensions.get('screen').width,
-    height: Dimensions.get('window').height * 0.7,
+    height: Dimensions.get('window').height * 0.96,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
