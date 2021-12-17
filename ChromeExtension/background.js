@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         })
         if (request.createWindow === true) {
             chrome.windows.create({ url: "firebase.html", type: "popup",
-                width: 500, height: 300, top: 250, left: 710, focused: false})
+                width: 500, height: 300, top: 200, left: 500, focused: false})
             setTimeout(() => {
                 chrome.runtime.sendMessage({command: "saveimage", src: request.url, user: user}) 
             }, 250) 
